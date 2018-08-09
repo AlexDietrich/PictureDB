@@ -35,6 +35,8 @@
             <MenuItem Header="_Options">
                 <MenuItem Header="_Option"></MenuItem>
                 <MenuItem Header="_NewOption"></MenuItem>
+                <MenuItem Header="_Change Home Folder" Name="MenuOptionChangeHomeFolder" Click="MenuOptionChangeHomeFolder_Click">
+            </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help" HorizontalAlignment="Right">
                 <MenuItem Header="_About"></MenuItem>

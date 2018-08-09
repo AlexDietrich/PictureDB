@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Models;
@@ -77,6 +79,35 @@ namespace PicDB
             {
                 Searchbar.Foreground = Brushes.DimGray;
                 Searchbar.Text = "Search picture";
+            }
+        }
+
+        public void MenuOptionChangeHomeFolder_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = GlobalInformation.Path;
+            fbd.ShowDialog();
+
+            //if the path changed, overwrite config file and load pictures of the new folder
+            if (fbd.SelectedPath != GlobalInformation.Path)
+            {
+                var oldLines = System.IO.File.ReadAllLines("config.txt");
+                List<string> newLines = new List<string>();
+                foreach (var line in oldLines)
+                {
+                    if (line.Contains("path,"))
+                    {
+                        string addLine = "path," + fbd.SelectedPath + "\\";
+                        newLines.Add(addLine);
+                    }
+                    else
+                    {
+                        newLines.Add(line);
+                    }
+                }
+                System.IO.File.WriteAllLines("config.txt", newLines);
+                GlobalInformation.ReadConfigFile();
+                ((PictureListViewModel)_controller.List).SyncAndUpdatePictureList();
             }
         }
 

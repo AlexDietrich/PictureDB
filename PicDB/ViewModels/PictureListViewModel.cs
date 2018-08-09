@@ -11,9 +11,10 @@ namespace PicDB.ViewModels
 {
     class PictureListViewModel : ViewModelNotifier, IPictureListViewModel
     {
+        private readonly BusinessLayer bl = new BusinessLayer();
+
         public PictureListViewModel()
         {
-            var bl = new BusinessLayer();
             bl.Sync(); //First Synch !!
             var pictures = bl.GetPictures();
 
@@ -56,6 +57,7 @@ namespace PicDB.ViewModels
                 NotifyPropertyChanged("List");
             }
         }
+
         public IEnumerable<IPictureViewModel> PrevPictures { get; }
 
         public IEnumerable<IPictureViewModel> NextPictures { get; }
@@ -69,6 +71,22 @@ namespace PicDB.ViewModels
         public void ResetList()
         {
             _list = new ObservableCollection<IPictureViewModel>(_backupList);
+        }
+
+        public void SyncAndUpdatePictureList()
+        {
+            bl.Sync();
+            var pictures = bl.GetPictures();
+            CurrentPicture = null;
+            _list.Clear();
+            foreach (IPictureModel model in pictures)
+            {
+                _list.Add(new PictureViewModel((PictureModel)model));
+            }
+            _backupList = new ObservableCollection<IPictureViewModel>(_list);
+
+            int firstModelID = _list.First().ID;
+            CurrentPicture = new PictureViewModel(bl.GetPicture(firstModelID));
         }
     }
 }

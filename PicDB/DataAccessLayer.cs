@@ -249,21 +249,38 @@ namespace PicDB
 
         public void DeletePicture(int ID)
         {
+            var itcpFk = 0;
             using (var connection = new SqlConnection(ConnectionString))
             using (var command = connection.CreateCommand())
             {
                 connection.Open();
 
-                command.CommandText = "DELETE FROM PictureModel " +
+                //select picture for itcp fk
+                command.CommandText = "Select fk_IPTC FROM PictureModel " +
                                       "WHERE ID = @id;";
-
-
                 var idParam = new SqlParameter("@id", SqlDbType.Int) { Value = ID };
-
                 command.Parameters.Add(idParam);
-
                 command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    reader.Read();
+                    itcpFk = int.Parse(reader["fk_IPTC"].ToString());
+                }
 
+                //delete picture
+                command.CommandText = "DELETE FROM PictureModel " +
+                                      "WHERE ID = @id2;";
+                idParam = new SqlParameter("@id2", SqlDbType.Int) { Value = ID };
+                command.Parameters.Add(idParam);
+                command.Prepare();
+                command.ExecuteScalar();
+
+                //delete itcp
+                command.CommandText = "DELETE FROM IPTCModel " +
+                                      "WHERE ID = @id3;";
+                idParam = new SqlParameter("@id3", SqlDbType.Int) { Value = itcpFk };
+                command.Parameters.Add(idParam);
+                command.Prepare();
                 command.ExecuteScalar();
                 connection.Close();
             }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using BIF.SWE2.Interfaces;
 using BIF.SWE2.Interfaces.Models;
 using BIF.SWE2.Interfaces.ViewModels;
@@ -56,7 +55,7 @@ namespace PicDB
         public void Sync()
         {
             //Alle Filenamen holen die sich im angegebenen Verzeichnis finden
-            IEnumerable<string> pathFiles = Directory.EnumerateFiles(_pathFolder);
+            IEnumerable<string> pathFiles = Directory.EnumerateFiles(GlobalInformation.Path);
             //Erstelle eine Liste und füge mit einer foreach Schleife die gefunden Files von pathFiles und füge die einzelnen Elemente der Liste hinzu
             var files = new HashSet<string>(pathFiles.Select(Path.GetFileName)); 
             
@@ -110,8 +109,8 @@ namespace PicDB
         public IIPTCModel ExtractIPTC(string filename)
         {
             var iptcData = new IPTCModel();
-            IEnumerable<string> pathFiles = Directory.EnumerateFiles(_pathFolder);
-            if (!pathFiles.Contains(Path.Combine(_pathFolder, filename))) throw new FileNotFoundException();
+            IEnumerable<string> pathFiles = Directory.EnumerateFiles(GlobalInformation.Path);
+            if (!pathFiles.Contains(Path.Combine(GlobalInformation.Path, filename))) throw new FileNotFoundException();
             iptcData.ByLine = "ByLine";
             iptcData.Caption = "caption";
             iptcData.CopyrightNotice = "this is my shit - bro!";
@@ -123,8 +122,8 @@ namespace PicDB
         public IEXIFModel ExtractEXIF(string filename)
         {
             var exifData = new EXIFModel();
-            IEnumerable<string> pathFiles = Directory.EnumerateFiles(_pathFolder);
-            if (!pathFiles.Contains(Path.Combine(_pathFolder, filename))) throw new FileNotFoundException();
+            IEnumerable<string> pathFiles = Directory.EnumerateFiles(GlobalInformation.Path);
+            if (!pathFiles.Contains(Path.Combine(GlobalInformation.Path, filename))) throw new FileNotFoundException();
             exifData.ExposureProgram = ExposurePrograms.CreativeProgram;
             exifData.ExposureTime = 10;
             exifData.FNumber = 2;
