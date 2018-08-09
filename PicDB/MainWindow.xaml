@@ -1,0 +1,314 @@
+﻿<Window x:Class="PicDB.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Path=Title}" Height="700" Width="1050">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <!-- Menu -->
+            <RowDefinition Height="20"/>
+            <!-- SearchBar -->
+            <RowDefinition Height="2*"/>
+            <!-- PictureView / Info -->
+            <RowDefinition Height="5"/>
+            <!-- GridSplitter Horizontal -->
+            <RowDefinition Height="0*"/>
+            <!-- GridSplitter barrier -->
+            <RowDefinition Height="130"/>
+            <!-- PictureSelection -->
+        </Grid.RowDefinitions>
+        <!-- Menu -->
+        <Menu Grid.Row="0"  DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="_File">
+                <MenuItem Header="_FileOption"></MenuItem>
+                <MenuItem Header="_NewFileOption"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_EditOption"></MenuItem>
+                <MenuItem Header="_NewEditOption"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="_Option"></MenuItem>
+                <MenuItem Header="_NewOption"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help" HorizontalAlignment="Right">
+                <MenuItem Header="_About"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <!-- SearchBar -->
+        <TextBox Grid.Row="1">
+
+        </TextBox>
+
+        <!-- PictureView / Info  -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <!-- PicturePreview -->
+                <ColumnDefinition Width="5"/>
+                <!-- GridSplitter Vertical -->
+                <ColumnDefinition Width="*"/>
+                <!-- InformationContainer -->
+            </Grid.ColumnDefinitions>
+
+            <!-- PicturePreview -->
+            <Image Grid.Column="0" Name="PicturePreview" Source="{Binding CurrentPicture.FilePath}"></Image>
+
+            <!-- GridSplitter Vertical -->
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"></GridSplitter>
+
+            <!-- InformationContainer -->
+            <TabControl Grid.Column="2">
+                <TabItem Header="General">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0">
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <!-- Name -->
+                                    <RowDefinition Height="auto"/>
+                                    <!-- Photographer -->
+                                    <RowDefinition Height="auto"/>
+                                    <!-- Camera -->
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Labels -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Values -->
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Name -->
+                                <Label Grid.Row="0" Grid.Column="0" Content="Name:"></Label>
+                                <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding CurrentPicture.FileName}"/>
+
+                                <!-- Photographer -->
+                                <Label Grid.Row="1" Grid.Column="0" Content="Photographer:"></Label>
+                                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="CurrentPicture.Photographer.FirstName"/>
+                                            <Binding Path="CurrentPicture.Photographer.LastName"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+
+                                <!-- Camera -->
+                                <Label Grid.Row="2" Grid.Column="0" Content="Camera:"></Label>
+                                <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="2" Grid.Column="0"  Text="{Binding CurrentPicture.Camera.Producer}"/>
+                                    <TextBlock Margin="2" Grid.Column="1" Text="{Binding CurrentPicture.Camera.Make}" />
+                                </Grid>
+                            </Grid>
+                        </DockPanel>
+                        <Grid Grid.Row="1">
+                            <!-- Listboxes for choosing Camera and Photographer for each picture -->
+                            <!-- UI Element to set Photographer -->
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0">Select a camera:</TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="1">Select a photographer:</TextBlock>
+                                <ListBox Name="CameraBox" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Path=CameraList.List}">
+                                    <!-- Listbox for all Cameras -->
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Margin="2" Grid.Column="0" Text="{Binding Producer}" />
+                                                <TextBlock Margin="2" Grid.Column="1" Text="{Binding Make}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <ListBox Name="PhotogrBox" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=PhotographerList.List}">
+                                    <!-- Listbox for all photographers -->
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Margin="2" Grid.Column="0" Text="{Binding LastName}" />
+                                                <TextBlock Margin="2" Grid.Column="1" Text="{Binding FirstName}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <!-- Button which trigger save function for Camera detail on Photo -->
+                            <Button Name="BtnSaveGeneralInfo" Click="BtnSaveGeneralInfo_Click" HorizontalAlignment="Center" Width="150" Height="25">Save</Button>
+                        </Grid>
+                    </Grid>
+
+                </TabItem>
+
+                <TabItem Header="IPTC">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <!-- Keywords -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ByLine -->
+                                <RowDefinition Height="auto"/>
+                                <!-- CopyrightNotice -->
+                                <RowDefinition Height="auto"/>
+                                <!-- Headline -->
+                                <RowDefinition Height="auto"/>
+                                <!-- Caption -->
+                                <RowDefinition Height="auto"/>
+                                <!-- Save button -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Keywords -->
+                            <StackPanel Grid.Row="0">
+                                <Label  Content="Keywords"/>
+                                <TextBox HorizontalAlignment="Stretch" Name="UI_IPTC_Keywords" Margin="5 0 5 10" Text="{Binding CurrentPicture.IPTC.Keywords}"></TextBox>
+                            </StackPanel>
+
+                            <!-- ByLine -->
+                            <StackPanel Grid.Row="1">
+                                <Label  Content="ByLine"/>
+                                <TextBox HorizontalAlignment="Stretch" Name="UI_IPTC_ByLine" Margin="5 0 5 10" Text="{Binding CurrentPicture.IPTC.ByLine}"></TextBox>
+                            </StackPanel>
+
+                            <!-- CopyrightNotice -->
+                            <StackPanel Grid.Row="2">
+                                <Label  Content="Copyright notice"/>
+                                <TextBox HorizontalAlignment="Stretch" Name="UI_IPTC_CopyrightNotice" Margin="5 0 5 10" Text="{Binding CurrentPicture.IPTC.CopyrightNotice}"></TextBox>
+                            </StackPanel>
+
+                            <!-- Headline -->
+                            <StackPanel Grid.Row="3">
+                                <Label  Content="Headline"/>
+                                <TextBox HorizontalAlignment="Stretch" Name="UI_IPTC_Headline" Margin="5 0 5 10" Text="{Binding CurrentPicture.IPTC.Headline}"></TextBox>
+                            </StackPanel>
+
+                            <!-- Caption -->
+                            <StackPanel Grid.Row="4">
+                                <Label  Content="Caption"/>
+                                <TextBox HorizontalAlignment="Stretch" Name="UI_IPTC_Caption" Margin="5 0 5 10" Text="{Binding CurrentPicture.IPTC.Caption}"></TextBox>
+                            </StackPanel>
+
+                            <Button Grid.Row="5" Name="BtnSaveIPTC" Click="BtnSaveIPTC_Click" HorizontalAlignment="Center" Width="90">Save</Button>
+                        </Grid>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Header="EXIF">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <!-- Make -->
+                                <RowDefinition Height="auto"/>
+                                <!-- FNumber -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ExposureTime -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ISOValue -->
+                                <RowDefinition Height="auto"/>
+                                <!-- Flash -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ExposureProgram -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ExposureProgramResource -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <!-- Labels -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Values -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Make -->
+                            <Label Grid.Row="0" Grid.Column="0" Content="Make:"></Label>
+                            <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.Make}"/>
+
+                            <!-- FNumber -->
+                            <Label Grid.Row="1" Grid.Column="0" Content="FNumber:"></Label>
+                            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.FNumber}"/>
+
+                            <!-- ExposureTime -->
+                            <Label Grid.Row="2" Grid.Column="0" Content="Exposure Time:"></Label>
+                            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ExposureTime}"/>
+
+                            <!-- ISOValue -->
+                            <Label Grid.Row="3" Grid.Column="0" Content="ISO Value:"></Label>
+                            <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ISOValue}"/>
+
+                            <!-- Flash -->
+                            <Label Grid.Row="4" Grid.Column="0" Content="Flash:"></Label>
+                            <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.Flash}"/>
+
+                            <!-- ExposureProgram -->
+                            <Label Grid.Row="5" Grid.Column="0" Content="Exposure Program:"></Label>
+                            <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ExposureProgram}"/>
+
+                            <!-- ExposureProgramResource -->
+                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Exposure Program Resource:"></TextBlock>
+                            <TextBlock Grid.Row="6" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ExposureProgramResource}"/>
+                        </Grid>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <!-- GridSplitter Horizontal -->
+        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch"></GridSplitter>
+
+        <!-- GridSplitter barrier -->
+        <Border Grid.Row="4" HorizontalAlignment="Stretch"></Border>
+
+        <!-- PictureSelection -->
+        <ListBox  Grid.Row="5" ItemsSource="{Binding Path=List.List}" SelectedItem="{Binding CurrentPicture}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
+                  Name="PictureSelection" SelectionChanged="PictureSelection_OnSelectionChanged">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"></VirtualizingStackPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Image Width="120" Height="120" Stretch="UniformToFill">
+                            <Image.Source>
+                                <BitmapImage DecodePixelWidth="200" UriSource="{Binding FilePath}" />
+                            </Image.Source>
+                        </Image>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
