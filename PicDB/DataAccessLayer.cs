@@ -167,6 +167,7 @@ namespace PicDB
 
                     var pictureModel = (PictureModel)picture;
 
+                    //Wenn ein Photographer hinzugefügt wird, soll diese auch auf die richtige ID gesetzt werden
                     if (pictureModel.Photographer != null)
                     {
                         command.CommandText = "Update dbo.PictureModel SET fk_Photographer = @fk_photo WHERE ID = @id";
@@ -178,6 +179,7 @@ namespace PicDB
 
                     }
 
+                    //Wenn eine Camera hinzugefügt wird zum Bild, soll diese auch auf die richtige ID gesetzt werden
                     if (pictureModel.Camera != null)
                     {
 

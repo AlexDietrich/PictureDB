@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Models;
 using PicDB.ViewModels;
@@ -19,6 +21,8 @@ namespace PicDB
             _controller = new MainWindowViewModel();
             InitializeComponent();
             this.DataContext = _controller;
+            Searchbar.Foreground = Brushes.DimGray;
+            Searchbar.Text = "Search picture";
         }
 
         private void BtnSaveIPTC_Click(object sender, RoutedEventArgs e)
@@ -41,6 +45,39 @@ namespace PicDB
                 _controller.CurrentPicture = (PictureViewModel)PictureSelection.SelectedItem;
             }
 
+        }
+
+        private void Searchbar_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            ((PictureListViewModel)_controller.List).ResetList();
+            if (Searchbar.IsFocused)
+            {
+                ObservableCollection<IPictureViewModel> filteredList = new ObservableCollection<IPictureViewModel>();
+                foreach (IPictureViewModel viewModel in _controller.List.List)
+                {
+                    if (viewModel.FileName.ToLower().Contains(Searchbar.Text.ToLower()))
+                    {
+                        filteredList.Add(viewModel);
+                    }
+                }
+                ((PictureListViewModel)_controller.List).List = filteredList;
+            }
+        }
+        private void Searchbar_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Searchbar.Text) && Searchbar.Foreground == Brushes.DimGray)
+            {
+                Searchbar.Text = string.Empty;
+                Searchbar.Foreground = Brushes.Black;
+            }
+        }
+        private void Searchbar_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Searchbar.Text))
+            {
+                Searchbar.Foreground = Brushes.DimGray;
+                Searchbar.Text = "Search picture";
+            }
         }
 
         /// <summary>

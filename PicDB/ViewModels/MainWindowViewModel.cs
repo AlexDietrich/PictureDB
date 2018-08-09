@@ -1,11 +1,5 @@
 ﻿using BIF.SWE2.Interfaces.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using PicDB.ViewModels;
-using BIF.SWE2.Interfaces.Models;
 
 namespace PicDB.Models
 {
@@ -19,7 +13,7 @@ namespace PicDB.Models
             get => _currentPicture;
             set
             {
-                if (_currentPicture != value)
+                if (_currentPicture != value && value != null)
                 {
                     _currentPicture = new PictureViewModel(_businessLayer.GetPicture(value.ID));
                     ((PictureListViewModel)List).CurrentPicture = _currentPicture;

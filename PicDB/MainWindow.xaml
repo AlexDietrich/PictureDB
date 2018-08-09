@@ -42,9 +42,8 @@
         </Menu>
 
         <!-- SearchBar -->
-        <TextBox Grid.Row="1">
+        <TextBox Grid.Row="1" Name="Searchbar" GotFocus="Searchbar_GotFocus" LostFocus="Searchbar_LostFocus" SelectionChanged="Searchbar_SelectionChanged"/>
 
-        </TextBox>
 
         <!-- PictureView / Info  -->
         <Grid Grid.Row="2">
