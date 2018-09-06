@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using PicDB.Models;
 using PicDB.ViewModels;
 
@@ -21,6 +12,8 @@ namespace PicDB
     public partial class CameraWindow : Window
     {
         private MainWindowViewModel _controller;
+        private CameraViewModel lastSelectedViewModel;
+
         public CameraWindow(MainWindowViewModel controller)
         {
             _controller = controller;
@@ -36,17 +29,49 @@ namespace PicDB
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (lastSelectedViewModel != null)
+            {
+                var cameraViewModel = lastSelectedViewModel;
+                int ID = cameraViewModel.ID;
+                try
+                {
+                    _controller.DeleteCamera(ID);
+                }
+                catch
+                {
+                    MessageBox.Show("Can't Delete This Camera Because it its assigned to a Picture", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                Producer.Text = string.Empty;
+                Make.Text = string.Empty;
+                BoughtOn.Text = string.Empty;
+                Notes.Text = string.Empty;
+                ISOLimitGood.Text = string.Empty;
+                ISOLimitAcceptable.Text = string.Empty;
+            }
         }
 
-        private void BtnEdit_Click(object sender, RoutedEventArgs e)
+        private void BtnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (lastSelectedViewModel == null) return;
+            CameraViewModel cameraViewModel = lastSelectedViewModel;
+
+            cameraViewModel.Producer = Producer.Text;
+            cameraViewModel.Make = Make.Text;
+            cameraViewModel.BoughtOn = DateTime.Parse(BoughtOn.Text);
+            cameraViewModel.Notes = Notes.Text;
+            Decimal.TryParse(ISOLimitGood.Text, out decimal isoLimitGood);
+            cameraViewModel.ISOLimitGood = isoLimitGood;
+            Decimal.TryParse(ISOLimitAcceptable.Text, out decimal isoLimitAcceptable);
+            cameraViewModel.ISOLimitAcceptable = isoLimitAcceptable;
+
+            _controller.UpdateCamera(cameraViewModel);
         }
 
         private void Camerabox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (CameraBox.SelectedItem == null) return;
             var CameraModel = (CameraViewModel)CameraBox.SelectedItem;
+            lastSelectedViewModel = CameraModel;
 
             Producer.Text = CameraModel.Producer;
             Make.Text = CameraModel.Make;

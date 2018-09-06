@@ -1,4 +1,5 @@
-﻿using BIF.SWE2.Interfaces.ViewModels;
+﻿using BIF.SWE2.Interfaces.Models;
+using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.ViewModels;
 
 namespace PicDB.Models
@@ -77,6 +78,18 @@ namespace PicDB.Models
             _businessLayer.SaveCamera(camera);
             var cameraList = (CameraListViewModel) CameraList;
             cameraList.SynchronizeCameras();
+        }
+
+        internal void UpdateCamera(ICameraViewModel cameraViewModel)
+        {
+            _businessLayer.UpdateCamera(new CameraModel(cameraViewModel));
+            ((CameraListViewModel)CameraList).SynchronizeCameras();
+        }
+
+        internal void DeleteCamera(int ID)
+        {
+            _businessLayer.DeleteCamera(ID);
+            ((CameraListViewModel)CameraList).SynchronizeCameras();
         }
     }
 }
