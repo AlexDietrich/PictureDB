@@ -97,6 +97,9 @@
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\ViewModelNotifier.cs" />
+    <Compile Include="Xaml\PhotographerAddWindow.xaml.cs">
+      <DependentUpon>PhotographerAddWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Xaml\PhotographerWindow.xaml.cs">
       <DependentUpon>PhotographerWindow.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Xaml\PhotographerAddWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Xaml\PhotographerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

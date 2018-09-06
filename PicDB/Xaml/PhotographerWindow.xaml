@@ -7,6 +7,82 @@
         mc:Ignorable="d"
         Title="PhotographerWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- List -->
+                <RowDefinition Height="40" />
+                <!-- Add Button -->
+            </Grid.RowDefinitions>
+
+            <ListBox Name="PhotographerBox" Grid.Row="0" ItemsSource="{Binding Path=PhotographerList.List}" SelectionChanged="PhotographerBox_OnSelectionChanged">
+                <!-- Listbox for all Photographers -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="2" Grid.Column="0" Grid.Row="0" Text="{Binding LastName}" />
+                            <TextBlock Margin="2" Grid.Column="1" Grid.Row="0" Text="{Binding FirstName}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="1" HorizontalAlignment="Center" Width="90" Click="BtnAdd_Click" Margin="10">Add</Button>
+        </Grid>
+
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- Attributes and Values -->
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Center">First Name</Label>
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Center">Last Name</Label>
+                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Center">Birthday</Label>
+                <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Center">Notes</Label>
+
+                <TextBox Name="FirstName"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"></TextBox>
+                <TextBox Name="LastName" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"></TextBox>
+                <TextBox Name="Birthday" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"></TextBox>
+                <TextBox Name="Notes" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"></TextBox>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Label Name="ErrorLabel" HorizontalAlignment="Center" Foreground="#FFFF0606"></Label>
+            </Grid>
+
+            <!-- Buttons -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" HorizontalAlignment="Center" Width="90" Click="BtnSaveChanges_Click" Margin="10">Save changes</Button>
+                <Button Grid.Column="1" HorizontalAlignment="Center" Width="90" Click="BtnDelete_Click" Margin="10">Delete</Button>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

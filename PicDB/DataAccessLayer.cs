@@ -353,11 +353,13 @@ namespace PicDB
         public void Save(IPhotographerModel photographer)
         {
             var query = String.Empty;
+            SqlParameter idParam = null; 
             if (Exists(photographer))
             {
                 query = "UPDATE dbo.PhotographerModel " +
                         "SET FirstName = @firstname, LastName = @lastname, Birthday = @birthday, Notes = @notes " +
                         "WHERE ID = @id;";
+                idParam = new SqlParameter("@id", SqlDbType.Int) {Value = photographer.ID};
             }
             else
             {
@@ -383,6 +385,7 @@ namespace PicDB
                     CommandText = query
                 };
 
+                if (idParam != null) command.Parameters.Add(idParam);
                 command.Parameters.Add(firstnameParam);
                 command.Parameters.Add(lastnameParam);
                 command.Parameters.Add(birthdayParam);
@@ -405,8 +408,6 @@ namespace PicDB
                 connection.Open();
                 command.CommandText = "DELETE FROM PhotographerModel " +
                                       "WHERE ID = @id";
-
-
                 var idParam = new SqlParameter("@id", SqlDbType.Int) { Value = ID };
 
                 command.Parameters.Add(idParam);
@@ -525,7 +526,6 @@ namespace PicDB
 
         public void SaveCamera(CameraModel camera)
         {
-            //TODO: Save Camera to database
             var query = "INSERT INTO dbo.CameraModel(Producer, Make, BoughtOn, Notes, ISOLimitAcceptable, ISOLimitGood)"
                         + "VALUES(@producer, @make, @boughtOn, @notes, @isoAcc, @isoGood);";
 

@@ -1,6 +1,7 @@
 ﻿using PicDB.Models;
 using System;
 using System.Windows;
+using PicDB.ViewModels;
 
 namespace PicDB
 {
@@ -20,7 +21,7 @@ namespace PicDB
 
         private void SaveBtn_Clicked(object sender, RoutedEventArgs e)
         {
-            var camera = new CameraModel();     
+            var camera = new CameraViewModel();     
             var boughtOn = DateTime.Now;
             decimal isoLimits;
 

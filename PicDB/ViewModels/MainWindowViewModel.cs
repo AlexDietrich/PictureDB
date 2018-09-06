@@ -73,9 +73,10 @@ namespace PicDB.Models
         }
 
         //public ObservableCollection<> CreatePictureViewModelCollection()
-        internal void SaveCamera(CameraModel camera)
+        internal void SaveCamera(CameraViewModel camera)
         {
-            _businessLayer.SaveCamera(camera);
+            var camModel = new CameraModel(camera);
+            _businessLayer.SaveCamera(camModel);
             var cameraList = (CameraListViewModel) CameraList;
             cameraList.SynchronizeCameras();
         }
@@ -90,6 +91,25 @@ namespace PicDB.Models
         {
             _businessLayer.DeleteCamera(ID);
             ((CameraListViewModel)CameraList).SynchronizeCameras();
+        }
+
+        public void UpdatePhotographer(PhotographerViewModel photographerViewModel)
+        {
+            _businessLayer.Save(new PhotographerModel(photographerViewModel));
+            ((PhotographerListViewModel)PhotographerList).SynchronizePhotographers();
+        }
+
+        public void DeletePhotographer(int id)
+        {
+            _businessLayer.DeletePhotographer(id);
+            ((PhotographerListViewModel)PhotographerList).SynchronizePhotographers();
+        }
+
+        public void SavePhotographer(PhotographerViewModel photographer)
+        {
+            _businessLayer.Save(new PhotographerModel(photographer));
+            var photographerlist = (PhotographerListViewModel)PhotographerList;
+            photographerlist.SynchronizePhotographers();
         }
     }
 }
