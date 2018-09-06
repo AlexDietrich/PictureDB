@@ -373,7 +373,7 @@ namespace PicDB
                 new SqlParameter("@lastname", SqlDbType.VarChar, 50) { Value = photographer.LastName };
             var birthdayParam =
                 new SqlParameter("@birthday", SqlDbType.DateTime) { Value = photographer.BirthDay };
-            var notesParam = new SqlParameter("@notes", SqlDbType.Text) { Value = photographer.Notes };
+            var notesParam = new SqlParameter("@notes", SqlDbType.Text, 255) { Value = photographer.Notes };
 
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -520,6 +520,47 @@ namespace PicDB
                 connection.Close();
 
                 return pCount == 1;
+            }
+        }
+
+        public void SaveCamera(CameraModel camera)
+        {
+            //TODO: Save Camera to database
+            var query = "INSERT INTO dbo.CameraModel(Producer, Make, BoughtOn, Notes, ISOLimitAcceptable, ISOLimitGood)"
+                        + "VALUES(@producer, @make, @boughtOn, @notes, @isoAcc, @isoGood);";
+
+            // Create and prepare an SQL statement.
+            var producerParam =
+                new SqlParameter("@producer", SqlDbType.Text, 255) { Value = camera.Producer };
+            var makeParam =
+                new SqlParameter("@make", SqlDbType.Text, 255) { Value = camera.Make };
+            var boughtOnParam =
+                new SqlParameter("@boughtOn", SqlDbType.DateTime) { Value = camera.BoughtOn };
+            var notesParam = new SqlParameter("@notes", SqlDbType.Text, 255) { Value = camera.Notes };
+            var isoAccLimit = new SqlParameter("@isoAcc", SqlDbType.Decimal) {Value = camera.ISOLimitAcceptable, Precision = 18, Scale = 0};
+            var isoGood = new SqlParameter("@isoGood", SqlDbType.Decimal){Value = camera.ISOLimitGood, Precision = 18, Scale = 0};
+
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(null, connection)
+                {
+                    CommandText = query
+                };
+
+                command.Parameters.Add(producerParam);
+                command.Parameters.Add(makeParam);
+                command.Parameters.Add(boughtOnParam);
+                command.Parameters.Add(notesParam);
+                command.Parameters.Add(isoAccLimit);
+                command.Parameters.Add(isoGood);
+
+                // Call Prepare after setting the Commandtext and Parameters.
+                command.Prepare();
+
+                // Change parameter values and call ExecuteNonQuery.
+                command.ExecuteScalar();
+                connection.Close();
             }
         }
     }

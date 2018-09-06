@@ -29,8 +29,8 @@
                 <MenuItem Header="_NewFileOption"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_EditOption"></MenuItem>
-                <MenuItem Header="_NewEditOption"></MenuItem>
+                <MenuItem Header="_Edit Cameras" Name="MenuEditCameras" Click="MenuEditCameras_Click"></MenuItem>
+                <MenuItem Header="_Edit Photographers" Name="MenuEditPhotographers" Click="MenuEditPhotographers_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Options">
                 <MenuItem Header="_Option"></MenuItem>

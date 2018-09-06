@@ -152,5 +152,11 @@ namespace PicDB
         {
             
         }
+
+        public void SaveCamera(CameraModel camera)
+        {
+            var dal = (DataAccessLayer) _dataAccessLayer;
+            dal.SaveCamera(camera);
+        }
     }
 }

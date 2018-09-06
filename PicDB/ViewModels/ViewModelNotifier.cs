@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PicDB.ViewModels
 {
-    class ViewModelNotifier : INotifyPropertyChanged
+    public class ViewModelNotifier : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

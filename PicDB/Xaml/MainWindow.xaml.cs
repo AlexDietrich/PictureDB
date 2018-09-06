@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -7,6 +9,9 @@ using System.Windows.Media;
 using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Models;
 using PicDB.ViewModels;
+using PicDB.Xaml;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace PicDB
 {
@@ -16,6 +21,7 @@ namespace PicDB
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel _controller;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public MainWindow()
         {
@@ -25,6 +31,7 @@ namespace PicDB
             this.DataContext = _controller;
             Searchbar.Foreground = Brushes.DimGray;
             Searchbar.Text = "Search picture";
+            log.Debug("Applikation erfolgreich gestartet.");
         }
 
         private void BtnSaveIPTC_Click(object sender, RoutedEventArgs e)
@@ -111,22 +118,35 @@ namespace PicDB
             }
         }
 
-        /// <summary>
-        /// TO MAYBO DO
-        /// </summary>
-        private void ValidateIPTC()
+        private void MenuEditCameras_Click(object sender, RoutedEventArgs e)
         {
-            string Keywords = UI_IPTC_Keywords.Text;
-            string ByLine = UI_IPTC_ByLine.Text;
-            string CopyrightNotice = UI_IPTC_CopyrightNotice.Text;
-            string Headline = UI_IPTC_Headline.Text;
-            string Caption = UI_IPTC_Caption.Text;
+            var cameraWindow = new CameraWindow(_controller);
+            cameraWindow.Show();
         }
+        private void MenuEditPhotographers_Click(object sender, RoutedEventArgs e)
+        {
+            var photographerWindow = new PhotographerWindow(_controller);
+            photographerWindow.Show();
+        }
+
+        ///// <summary>
+        ///// TO MAYBO DO
+        ///// </summary>
+        //private void ValidateIPTC()
+        //{
+        //    string Keywords = UI_IPTC_Keywords.Text;
+        //    string ByLine = UI_IPTC_ByLine.Text;
+        //    string CopyrightNotice = UI_IPTC_CopyrightNotice.Text;
+        //    string Headline = UI_IPTC_Headline.Text;
+        //    string Caption = UI_IPTC_Caption.Text;
+        //}
 
         private void BtnSaveGeneralInfo_Click(object sender, RoutedEventArgs e)
         {
             var CameraViewmodel = (CameraViewModel)CameraBox.SelectedItem;
+
             var PhotographerViewModel = (PhotographerViewModel)PhotogrBox.SelectedItem;
+
             _controller.SaveGeneralInformation(CameraViewmodel, PhotographerViewModel);
         }
 

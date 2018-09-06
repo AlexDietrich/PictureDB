@@ -24,8 +24,8 @@ namespace PicDB.Models
             FileName = mdl.FileName;
             IPTC = new IPTCModel(mdl.IPTC); 
             EXIF = new EXIFModel(mdl.EXIF);
-            Camera = new CameraModel(mdl.Camera);
-            Photographer = new PhotographerModel(mdl.Photographer);
+            if(mdl.Camera != null) Camera = new CameraModel(mdl.Camera);
+            if(mdl.Photographer != null) Photographer = new PhotographerModel(mdl.Photographer);
         }
 
         public int ID { get; set; }

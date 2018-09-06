@@ -3,7 +3,7 @@ using PicDB.ViewModels;
 
 namespace PicDB.Models
 {
-    class MainWindowViewModel : ViewModelNotifier, IMainWindowViewModel
+    public class MainWindowViewModel : ViewModelNotifier, IMainWindowViewModel
     {
         private readonly BusinessLayer _businessLayer = new BusinessLayer();
 
@@ -65,11 +65,18 @@ namespace PicDB.Models
 
         internal void SaveGeneralInformation(CameraViewModel cameraViewmodel, PhotographerViewModel photographerViewModel)
         {
-            ((PictureViewModel)CurrentPicture).Camera =  cameraViewmodel;
-            ((PictureViewModel)CurrentPicture).Photographer = photographerViewModel;
+            ((PictureViewModel)CurrentPicture).Camera = cameraViewmodel ?? null;
+
+            ((PictureViewModel)CurrentPicture).Photographer = photographerViewModel ?? null;
             SaveCurrentPicture();
         }
 
         //public ObservableCollection<> CreatePictureViewModelCollection()
+        internal void SaveCamera(CameraModel camera)
+        {
+            _businessLayer.SaveCamera(camera);
+            var cameraList = (CameraListViewModel) CameraList;
+            cameraList.SynchronizeCameras();
+        }
     }
 }
