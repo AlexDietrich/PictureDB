@@ -57,6 +57,8 @@ namespace PicDB.Models
         {
             CurrentPicture = List.CurrentPicture;
             Title = "PicDB - " + CurrentPicture.DisplayName;
+            var testy = new PDFReport();
+            testy.CreateReport(CurrentPicture);
         }
 
         public void SaveCurrentPicture()
