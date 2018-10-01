@@ -242,6 +242,8 @@
                                 <!-- ExposureProgram -->
                                 <RowDefinition Height="auto"/>
                                 <!-- ExposureProgramResource -->
+                                <RowDefinition Height="auto"/>
+                                <!-- ISORating --> 
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -277,6 +279,10 @@
                             <!-- ExposureProgramResource -->
                             <TextBlock Grid.Row="6" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Exposure Program Resource:"></TextBlock>
                             <TextBlock Grid.Row="6" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ExposureProgramResource}"/>
+
+                            <!-- ExposureProgram -->
+                            <Label Grid.Row="7" Grid.Column="0" Content="ISORating:"></Label>
+                            <TextBlock Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Text="{Binding CurrentPicture.EXIF.ISORating}"/>
                         </Grid>
                     </DockPanel>
                 </TabItem>

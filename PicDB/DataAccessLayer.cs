@@ -18,6 +18,10 @@ namespace PicDB
             ConnectionString = GlobalInformation.ConnectionString;
         }
 
+        /// <summary>
+        /// Returns a filterd list of Pictures from the directory, based on a database query.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts,
             IEXIFModel exifParts)
         {
@@ -51,6 +55,11 @@ namespace PicDB
             return liste;
         }
 
+        /// <summary>
+        /// Returns ONE Picture from the database.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public IPictureModel GetPicture(int ID)
         {
             var picture = new PictureModel
@@ -111,6 +120,10 @@ namespace PicDB
             return picture;
         }
 
+        /// <summary>
+        /// Saves all changes to the database.
+        /// </summary>
+        /// <param name="picture"></param>
         public void Save(IPictureModel picture)
         {
             if (Exists(picture))
@@ -247,6 +260,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Deletes a Picture from the database.
+        /// </summary>
+        /// <param name="ID"></param>
         public void DeletePicture(int ID)
         {
             var itcpFk = 0;
@@ -286,6 +303,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Returns a list of ALL Photographers.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<IPhotographerModel> GetPhotographers()
         {
             var photographers = new List<PhotographerModel>();
@@ -318,6 +339,11 @@ namespace PicDB
             return photographers;
         }
 
+        /// <summary>
+        /// Returns ONE Photographer
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public IPhotographerModel GetPhotographer(int ID)
         {
             var photographer = new PhotographerModel();
@@ -350,6 +376,10 @@ namespace PicDB
             return photographer;
         }
 
+        /// <summary>
+        /// Saves all changes.
+        /// </summary>
+        /// <param name="photographer"></param>
         public void Save(IPhotographerModel photographer)
         {
             var query = String.Empty;
@@ -400,6 +430,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Deletes a Photographer. A Exception is thrown if a Photographer is still linked to a picture.
+        /// </summary>
+        /// <param name="ID"></param>
         public void DeletePhotographer(int ID)
         {
             using (var connection = new SqlConnection(ConnectionString))
@@ -419,6 +453,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Returns a list of ALL Cameras.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ICameraModel> GetCameras()
         {
             var queryString =
@@ -452,6 +490,11 @@ namespace PicDB
             return liste;
         }
 
+        /// <summary>
+        /// Returns ONE Camera
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public ICameraModel GetCamera(int ID)
         {
             var queryString =
@@ -488,7 +531,12 @@ namespace PicDB
             return model;
         }
 
-        private bool Exists(IPictureModel picture)
+        /// <summary>
+        /// Check if the picture already exists in the db 
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <returns></returns>
+        internal bool Exists(IPictureModel picture)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -506,7 +554,12 @@ namespace PicDB
             }
         }
 
-        private bool Exists(IPhotographerModel photographer)
+        /// <summary>
+        /// Check if photographer already exists in db 
+        /// </summary>
+        /// <param name="photographer"></param>
+        /// <returns></returns>
+        internal bool Exists(IPhotographerModel photographer)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -524,6 +577,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Save camera in the db 
+        /// </summary>
+        /// <param name="camera"></param>
         public void SaveCamera(CameraModel camera)
         {
             var query = "INSERT INTO dbo.CameraModel(Producer, Make, BoughtOn, Notes, ISOLimitAcceptable, ISOLimitGood)"
@@ -564,6 +621,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Update camera in the db
+        /// </summary>
+        /// <param name="cameraModel"></param>
         public void UpdateCamera(ICameraModel cameraModel)
         {
             using (var connection = new SqlConnection(ConnectionString))
@@ -597,6 +658,10 @@ namespace PicDB
             }
         }
 
+        /// <summary>
+        /// Delete camera of the db 
+        /// </summary>
+        /// <param name="ID"></param>
         public void DeleteCamera(int ID)
         {
             using (var connection = new SqlConnection(ConnectionString))

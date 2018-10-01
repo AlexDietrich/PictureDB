@@ -24,14 +24,27 @@ namespace PicDB.ViewModels
             this.Camera = new CameraViewModel(mdl.Camera);
             this.Photographer = new PhotographerViewModel(mdlCast.Photographer);
             this.FilePath = GlobalInformation.Path + "\\" + FileName;
+            this.EXIF.Camera = this.Camera; 
         }
 
+        /// <summary>
+        /// Database primary key
+        /// </summary>
         public int ID { get; }
 
+        /// <summary>
+        /// Name of the file
+        /// </summary>
         public string FileName { get; }
 
+        /// <summary>
+        /// Full file path, used to load the image
+        /// </summary>
         public string FilePath { get; }
 
+        /// <summary>
+        /// The line below the Picture. Format: {IPTC.Headline|FileName} (by {Photographer|IPTC.ByLine}).
+        /// </summary>
         public string DisplayName
         {
             get
@@ -51,12 +64,24 @@ namespace PicDB.ViewModels
             }
         }
 
+        /// <summary>
+        /// The IPTC ViewModel
+        /// </summary>
         public IIPTCViewModel IPTC { get; }
 
+        /// <summary>
+        /// The EXIF ViewModel
+        /// </summary>
         public IEXIFViewModel EXIF { get; }
 
+        /// <summary>
+        /// The Photographer ViewModel
+        /// </summary>
         public IPhotographerViewModel Photographer { get; set; }
 
+        /// <summary>
+        /// The Camera ViewModel
+        /// </summary>
         public ICameraViewModel Camera { get; set; }
     }
 }

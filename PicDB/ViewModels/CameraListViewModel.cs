@@ -12,6 +12,10 @@ namespace PicDB.ViewModels
     {
 
         private IEnumerable<ICameraViewModel> _list;
+
+        /// <summary>
+        /// List of all CameraListViewModel
+        /// </summary>
         public IEnumerable<ICameraViewModel> List
         {
             get => _list;
@@ -22,6 +26,9 @@ namespace PicDB.ViewModels
             }
         }
 
+        /// <summary>
+        /// The currently selected CameraListViewModel
+        /// </summary>
         public ICameraViewModel CurrentCamera
         {
             get => CurrentCamera;
@@ -37,6 +44,9 @@ namespace PicDB.ViewModels
             SynchronizeCameras();
         }
 
+        /// <summary>
+        /// Syncs the cameras from the db with the list 
+        /// </summary>
         public void SynchronizeCameras()
         {
             var bl = new BusinessLayer();

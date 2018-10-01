@@ -11,6 +11,9 @@ namespace PicDB
 
         public static string Path;
 
+        /// <summary>
+        /// Get the Elements out of the config file and save them into properties
+        /// </summary>
         public static void ReadConfigFile()
         {
             var dict = new Dictionary<string, string>();
@@ -22,8 +25,8 @@ namespace PicDB
                 else throw new ArgumentNullException("Config-File corrupted!");
             }
 
-            ConnectionString = dict["connectionString"];
-            Path = dict["path"];
+            ConnectionString = (dict.ContainsKey("connectionString")) ? dict["connectionString"] : null;
+            Path = (dict.ContainsKey("path")) ? dict["path"] : null;
         }
     }
 }

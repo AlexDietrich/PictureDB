@@ -10,6 +10,10 @@ namespace PicDB.ViewModels
     class PhotographerListViewModel : ViewModelNotifier, IPhotographerListViewModel
     {
         private IEnumerable<IPhotographerViewModel> _list;
+
+        /// <summary>
+        /// List of all PhotographerViewModel
+        /// </summary>
         public IEnumerable<IPhotographerViewModel> List
         {
             get => _list;
@@ -20,6 +24,9 @@ namespace PicDB.ViewModels
             }
         }
 
+        /// <summary>
+        /// The currently selected PhotographerViewModel
+        /// </summary>
         public IPhotographerViewModel CurrentPhotographer
         {
             get => CurrentPhotographer;
@@ -35,6 +42,9 @@ namespace PicDB.ViewModels
             SynchronizePhotographers();
         }
 
+        /// <summary>
+        /// Syncs the Photographer from the db with the list
+        /// </summary>
         public void SynchronizePhotographers()
         {
             var bl = new BusinessLayer();

@@ -11,6 +11,11 @@ namespace PicDB.ViewModels
 {
     class CameraViewModel : ICameraViewModel
     {
+        /// <summary>
+        /// Translates a given ISO value to a ISO rating
+        /// </summary>
+        /// <param name="iso"></param>
+        /// <returns></returns>
         public ISORatings TranslateISORating(decimal iso)
         {
             if (iso == 0) return ISORatings.NotDefined;
@@ -34,20 +39,44 @@ namespace PicDB.ViewModels
             this.Notes = mdl.Notes;
         }
 
+        /// <summary>
+        /// Database primary key
+        /// </summary>
         public int ID { get; }
 
+        /// <summary>
+        /// Name of the producer
+        /// </summary>
         public string Producer { get; set; }
 
+        /// <summary>
+        /// Name of camera
+        /// </summary>
         public string Make { get; set; }
 
+        /// <summary>
+        /// Optional: date, when the camera was bought
+        /// </summary>
         public DateTime? BoughtOn { get; set; }
 
+        /// <summary>
+        /// Notes
+        /// </summary>
         public string Notes { get; set; }
 
+        /// <summary>
+        /// Returns the number of Pictures
+        /// </summary>
         public int NumberOfPictures { get; }
 
+        /// <summary>
+        /// Returns true, if the model is valid
+        /// </summary>
         public bool IsValid => IsValidBoughtOn && IsValidMake && IsValidProducer;
 
+        /// <summary>
+        /// Returns a summary of validation errors
+        /// </summary>
         public string ValidationSummary
         {
             get
@@ -67,10 +96,19 @@ namespace PicDB.ViewModels
             }
         }
 
+        /// <summary>
+        /// returns true if the producer name is valid
+        /// </summary>
         public bool IsValidProducer => !string.IsNullOrEmpty(Producer) && !string.IsNullOrWhiteSpace(Producer);
 
+        /// <summary>
+        /// returns true if the make is valid
+        /// </summary>
         public bool IsValidMake => !string.IsNullOrEmpty(Make) && !string.IsNullOrWhiteSpace(Make);
 
+        /// <summary>
+        /// returns true if the "bought on" date is valid
+        /// </summary>
         public bool IsValidBoughtOn
         {
             get
@@ -80,8 +118,14 @@ namespace PicDB.ViewModels
             }
         }
 
+        /// <summary>
+        /// Max ISO Value for good results. 0 means "not defined"
+        /// </summary>
         public decimal ISOLimitGood { get; set; }
 
+        /// <summary>
+        /// Max ISO Value for acceptable results. 0 means "not defined"
+        /// </summary>
         public decimal ISOLimitAcceptable { get; set; }
     }
 }
