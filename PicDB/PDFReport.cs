@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BIF.SWE2.Interfaces.ViewModels;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -11,80 +12,180 @@ namespace PicDB
     // ReSharper disable once InconsistentNaming
     internal class PDFReport
     {
-        public void CreateReport(IPictureListViewModel pictures , string tags)
+        public void PdfReport(PictureViewModel pvm)
         {
-            var filteredPics = GetFilteredPictureList(pictures, tags);
-            var report = new PdfDocument();
-            var filename = $"Report{DateTime.Now.Ticks}.pdf";
-            foreach (var picture in filteredPics)
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = pvm.FileName;
+
+            // Create an empty page
+            PdfPage page = document.AddPage();
+
+            // Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Create a font
+            XFont font = new XFont("Verdana", 10);
+
+            // Create Image
+            var image = XImage.FromFile(pvm.FilePath);
+
+            // Draw the text
+            gfx.DrawString("Filename: " + pvm.FileName, font, XBrushes.Black,
+                new XRect(10, 0, page.Width, 10),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Photographer: ", font, XBrushes.Black,
+                new XRect(10, 20, page.Width, 20),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Name: " + pvm.Photographer.FirstName + " " + pvm.Photographer.LastName, font, XBrushes.Black,
+                new XRect(10, 30, page.Width, 30),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Birthday: " + pvm.Photographer.BirthDay, font, XBrushes.Black,
+                new XRect(10, 40, page.Width, 40),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Notes: " + pvm.Photographer.Notes, font, XBrushes.Black,
+                new XRect(10, 50, page.Width, 50),
+                XStringFormats.TopLeft);
+
+            gfx.DrawImage(image, 100, 100, page.Width - 200, 200);
+
+            gfx.DrawString("IPTC: ", font, XBrushes.Black,
+                new XRect(10, 410, page.Width, 420),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ByLine: " + pvm.IPTC.ByLine + " " + pvm.Photographer.LastName, font, XBrushes.Black,
+                new XRect(10, 420, page.Width, 430),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Caption: " + pvm.IPTC.Caption + " " + pvm.Photographer.LastName, font, XBrushes.Black,
+                new XRect(10, 430, page.Width, 440),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Headline: " + pvm.IPTC.Headline, font, XBrushes.Black,
+                new XRect(10, 440, page.Width, 250),
+                XStringFormats.TopLeft);
+            gfx.DrawString("CopyrightNotice: " + pvm.IPTC.CopyrightNotice, font, XBrushes.Black,
+                new XRect(10, 450, page.Width, 260),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Keywords: " + pvm.IPTC.Keywords, font, XBrushes.Black,
+                new XRect(10, 460, page.Width, 270),
+                XStringFormats.TopLeft);
+
+            gfx.DrawString("EXIF: ", font, XBrushes.Black,
+                new XRect(10, 490, page.Width, 420),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ExposureProgram: " + pvm.EXIF.ExposureProgram, font, XBrushes.Black,
+                new XRect(10, 500, page.Width, 430),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ExposureProgramResource: " + pvm.EXIF.ExposureProgramResource , font, XBrushes.Black,
+                new XRect(10, 510, page.Width, 440),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ExposureTime: " + pvm.EXIF.ExposureTime, font, XBrushes.Black,
+                new XRect(10, 520, page.Width, 250),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Flash: " + pvm.EXIF.Flash, font, XBrushes.Black,
+                new XRect(10, 530, page.Width, 260),
+                XStringFormats.TopLeft);
+            gfx.DrawString("FNumber: " + pvm.EXIF.FNumber, font, XBrushes.Black,
+                new XRect(10, 540, page.Width, 270),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ISORating: " + pvm.EXIF.ISORating, font, XBrushes.Black,
+                new XRect(10, 550, page.Width, 270),
+                XStringFormats.TopLeft);
+            gfx.DrawString("ISOValue: " + pvm.EXIF.ISOValue, font, XBrushes.Black,
+                new XRect(10, 560, page.Width, 270),
+                XStringFormats.TopLeft);
+            gfx.DrawString("Make: " + pvm.EXIF.Make, font, XBrushes.Black,
+                new XRect(10, 570, page.Width, 270),
+                XStringFormats.TopLeft);
+
+            document.Save(GlobalInformation.Path + "\\Reports\\report" + pvm.ID + ".pdf");
+        }
+
+        public void PdfReport(string tags)
+        {
+            BusinessLayer bl = new BusinessLayer();
+
+            Dictionary<string, int> tagDict = bl.GetTagCount();
+
+            tags = tags.ToLower(); 
+
+            string[] tagArray = tags.Split(';');
+
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = tags;
+
+            // Create an empty page
+            PdfPage page = document.AddPage();
+
+            // Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Create a font
+            XFont font = new XFont("Verdana", 10);
+
+
+            gfx.DrawString("Tag: Count", font, XBrushes.Black,
+                new XRect(10, 0, page.Width, 10),
+                XStringFormats.TopLeft);
+
+            gfx.DrawString("____________________", font, XBrushes.Black,
+                new XRect(10, 0, page.Width, 10),
+                XStringFormats.TopLeft);
+
+            int textHeight = 20;
+
+            if (String.IsNullOrWhiteSpace(tags))
             {
-                if (!File.Exists(picture.FilePath))
+                foreach (KeyValuePair<string, int> valuePair in tagDict)
                 {
-                    throw new FileNotFoundException();
+
+                    // Draw the text
+                    gfx.DrawString(valuePair.Key + ": " + valuePair.Value, font, XBrushes.Black,
+                        new XRect(10, textHeight, page.Width, 10),
+                        XStringFormats.TopLeft);
+
+                    textHeight += 10;
+
                 }
-                var page = report.AddPage();
-
-                var gfx = XGraphics.FromPdfPage(page);
-                
-                var image = XImage.FromFile(picture.FilePath);
-
-                gfx.DrawString("Entered Keywords: " + tags, new XFont("Times New Roman", 16), XBrushes.Red, new XRect(50, 20, page.Width, page.Height), XStringFormats.TopLeft);
-                
-                gfx.DrawString("Filename: " + picture.FileName, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 40, page.Width, page.Height), XStringFormats.TopLeft);
-                gfx.DrawString("Keywords: " + picture.IPTC.Keywords, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 54, page.Width, page.Height), XStringFormats.TopLeft);
-                gfx.DrawString("Copyright: " + picture.IPTC.CopyrightNotice, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 68, page.Width, page.Height), XStringFormats.TopLeft);
-
-                gfx.DrawImage(image, 50, 100, page.Width/ 1.2, page.Height / 2);
-
-
             }
-            report.Save(Path.GetTempPath() + filename);
-        }
-
-        public void CreateReport(IPictureViewModel picture)
-        {
-            if (!File.Exists(picture.FilePath))
+            else
             {
-                throw new FileNotFoundException();
+                foreach (KeyValuePair<string, int> valuePair in tagDict)
+                {
+                    if (tagArray.Contains((valuePair.Key).ToLower()))
+                    {
+                        // Draw the text
+                        gfx.DrawString(valuePair.Key + ": " + valuePair.Value, font, XBrushes.Black,
+                            new XRect(10, textHeight, page.Width, 10),
+                            XStringFormats.TopLeft);
+
+                        textHeight += 10;
+                    }
+                }
             }
 
-            var report = new PdfDocument();
-            var page = report.AddPage();
-            var filename = $"Report{DateTime.Now.Ticks}.pdf";
-
-            var gfx = XGraphics.FromPdfPage(page);
 
 
+            if (String.IsNullOrWhiteSpace(tags))
+            {
+                document.Save(GlobalInformation.Path + "\\Reports\\reportalltags.pdf");
+            }
+            else
+            {
+                document.Save(GlobalInformation.Path + "\\Reports\\report" + tags + ".pdf");
+            }
 
-            var image = XImage.FromFile(picture.FilePath);
-            
-            gfx.DrawImage(image, 50, 50, 500, 300);
-
-            gfx.DrawString("Filename: " + picture.FileName, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 400, page.Width, page.Height), XStringFormats.TopLeft);
-            gfx.DrawString("Keywords: " + picture.IPTC.Keywords, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 414, page.Width, page.Height), XStringFormats.TopLeft);
-            gfx.DrawString("Copyright: " + picture.IPTC.CopyrightNotice, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 428, page.Width, page.Height), XStringFormats.TopLeft);
-            gfx.DrawString("Camera Producer: " + picture.Camera.Producer, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 440, page.Width, page.Height), XStringFormats.TopLeft);
-            gfx.DrawString("Camera Make: " + picture.Camera.Make, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 454, page.Width, page.Height), XStringFormats.TopLeft);
-            gfx.DrawString("Headline: " + picture.IPTC.Headline, new XFont("Times New Roman", 12), XBrushes.Black, new XRect(50, 468, page.Width, page.Height), XStringFormats.TopLeft);
-
-
-            report.Save(Path.GetTempPath()+filename);
         }
 
-
-        private List<PictureViewModel> GetFilteredPictureList(IPictureListViewModel plvm, string tags)
+        private List<PictureViewModel> GetFilteredPictureList(PictureListViewModel plvm, string tags)
         {
+
             List<PictureViewModel> filteredPictures = new List<PictureViewModel>();
-            var bl = new BusinessLayer();
 
             //load picture list into new list
-            foreach (var pictureViewModel in plvm.List)
+            foreach (PictureViewModel picture in plvm.List)
             {
-                var picture = (PictureViewModel) pictureViewModel;
-                filteredPictures.Add(new PictureViewModel(bl.GetPicture(picture.ID)));
+                filteredPictures.Add(picture);
             }
-
-            var tempList = new List<PictureViewModel>(filteredPictures);
 
             //get array of Tags
             string[] tagArray = tags.Split(' ');
@@ -92,12 +193,14 @@ namespace PicDB
             //filter list
             foreach (string tag in tagArray)
             {
-                foreach (var pictureViewModel in tempList)
+                foreach (PictureViewModel picture in plvm.List)
                 {
-                    var picture = (PictureViewModel) pictureViewModel;
-                    if (!picture.IPTC.Keywords.Contains(tag) && filteredPictures.Contains(picture))
+                    if (picture.IPTC.Keywords != null)
                     {
-                        filteredPictures.Remove(picture);
+                        if (!picture.IPTC.Keywords.Contains(tag) && filteredPictures.Contains(picture))
+                        {
+                            filteredPictures.Remove(picture);
+                        }
                     }
                 }
             }

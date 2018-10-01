@@ -120,6 +120,9 @@
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\ViewModelNotifier.cs" />
+    <Compile Include="Xaml\ExportPdfWindow.xaml.cs">
+      <DependentUpon>ExportPdfWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Xaml\PhotographerAddWindow.xaml.cs">
       <DependentUpon>PhotographerAddWindow.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Xaml\CameraWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml\ExportPdfWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

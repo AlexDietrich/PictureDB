@@ -128,18 +128,7 @@ namespace PicDB
             var photographerWindow = new PhotographerWindow(_controller);
             photographerWindow.Show();
         }
-
-        ///// <summary>
-        ///// TO MAYBO DO
-        ///// </summary>
-        //private void ValidateIPTC()
-        //{
-        //    string Keywords = UI_IPTC_Keywords.Text;
-        //    string ByLine = UI_IPTC_ByLine.Text;
-        //    string CopyrightNotice = UI_IPTC_CopyrightNotice.Text;
-        //    string Headline = UI_IPTC_Headline.Text;
-        //    string Caption = UI_IPTC_Caption.Text;
-        //}
+        
 
         private void BtnSaveGeneralInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -148,6 +137,20 @@ namespace PicDB
             var PhotographerViewModel = (PhotographerViewModel)PhotogrBox.SelectedItem;
 
             _controller.SaveGeneralInformation(CameraViewmodel, PhotographerViewModel);
+        }
+
+        private void MenuFileExportPdf_Click(object sender, RoutedEventArgs e)
+        {
+            var exportPdfWindow = new ExportPdfWindow(_controller);
+
+            exportPdfWindow.Show();
+        }
+
+        private void BtnExportPdf_Click(object sender, RoutedEventArgs e)
+        {
+            var report = new PDFReport();
+
+            report.PdfReport((PictureViewModel)_controller.CurrentPicture);
         }
 
     }

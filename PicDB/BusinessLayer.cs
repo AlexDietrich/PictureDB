@@ -253,5 +253,10 @@ namespace PicDB
             var dal = (DataAccessLayer) _dataAccessLayer;
             dal.SaveCamera(camera);
         }
+
+        public Dictionary<string, int> GetTagCount()
+        {
+            return ((DataAccessLayer) _dataAccessLayer).GetTagCount();
+        }
     }
 }
