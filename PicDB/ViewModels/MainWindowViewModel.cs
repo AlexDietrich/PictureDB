@@ -1,5 +1,4 @@
-﻿using BIF.SWE2.Interfaces.Models;
-using BIF.SWE2.Interfaces.ViewModels;
+﻿using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.ViewModels;
 
 namespace PicDB.Models

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 using BIF.SWE2.Interfaces;
 using BIF.SWE2.Interfaces.Models;
 using PicDB.Models;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using BIF.SWE2.Interfaces.ViewModels;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PicDB.ViewModels;
@@ -101,9 +99,9 @@ namespace PicDB
 
         public void PdfReport(string tags)
         {
-            BusinessLayer bl = new BusinessLayer();
+            var bl = new BusinessLayer();
 
-            Dictionary<string, int> tagDict = bl.GetTagCount();
+            var tagDict = bl.GetTagCount();
 
             tags = tags.ToLower(); 
 

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using BIF.SWE2.Interfaces;
 using BIF.SWE2.Interfaces.ViewModels;
 using BIF.SWE2.Interfaces.Models;
-using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
